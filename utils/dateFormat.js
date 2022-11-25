@@ -37,7 +37,32 @@ module.exports = (
 9:monthLength === "short" ? "Oct" : "October",
 10:monthLength === "short" ? "Nov" : "November",
 11:monthLength === "short" ? "Dec" : "December",
+};
 
-  };
-  
+const dateObj = new Date(timestamp);
+const formattedMonth = months[dateObj.getMonth()];
+
+const dayOfMonth = dateSuffix
+? addDateSuffix(dateobj.getDate())
+: dateObj.getDate();
+
+const year = dateObj.getfullYear();
+let hour = 
+ dateObj.getHours() > 12
+ ? Math.floor(dateObj.getHours() - 12)
+ : dateObj.getHours();
+
+ //if hour is 0 (12:00am), change it to 12
+ if (hour === 0 ) {
+  hour = 12;
+ }
+
+ const minutes = (dateObj.getMinutes() < 10 ? "0" : "") + dateObj.getMinutes();
+
+ // am or pm 
+const periodOfDay = dateObj.getHours() >= 12 ? "pm" : "am";
+
+const formattedTimeStamp = `${formattedMonth} ${dayOfMonth}, ${year} at ${hour}:${minutes} ${periodOfDay}`;
+
+return formattedTimeStamp; 
 };
