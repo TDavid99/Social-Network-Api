@@ -35,11 +35,11 @@ router.post("/", (req, res) => {
     );
   })
   .then((dbUserData) => {
-    id(!dbUserData) {
+    if(!dbUserData) {
       res.status(404).json({message: "invaild user id."});
       return;
     }
-    res.jsin(dbUserData);
+    res.json(dbUserData);
   })
   .catch((err) => res.json(err));
 });
@@ -60,4 +60,57 @@ router.put("/:id", ({params, body}, res) => {
   .catch((err) => res.json(err));
 });
 
-/
+// delete a thought
+
+router.delete("/:thoughtId", (req, res) => {
+  Thought.findOneAndDelete({ _id: req.params.thoughtId})
+  .then((deletedThought) =>{
+    if(!deletedThought) {
+      return res.status(404).json({ message: "invaild "});
+    }
+    return User.findOneAndUpdate(
+      {thoughts: req.params.thoughtId }, 
+      {$pull: {thought: req.params.thoughtId} },
+      {new: true}
+
+    );
+  })
+  .then((dbUserData) => {
+    if(!dbUserData) {
+      res.status(404).json({message: "invaild user id "});
+      return;
+    }
+    res.json(dbUserData);
+  })
+  .catch((err) => res.json(err));
+});
+
+// add a reaction  
+router.post("/:thougthtId/reactions", (req, res) => {
+  Thought.findOneAndUpdate(
+  {_id: req.params.thougthtId },
+  {
+    $addToSet: {
+      reactions: {
+        reactionBody: req.body.reactionBody,
+      },
+    },
+  },
+  { new: true }
+)
+  .then((dbThoughtData) => res.json(dbThoughtData))
+  .catch((err) => res.json(err));
+});
+  
+//delete a reaction
+router.delete("/:thoghtId/reactions/:reactionId ", (req, res) => {
+  Thought. findOneAndUpdate(
+    {_id:req.params.thoughtId },
+    { $pull: { reactions: { _id: req.params.reactionId } } },
+    { new: true }
+  )
+    .then((dbThoughtData) => res.json(dbThoughtData))
+    .catch((err) => res.json(err));
+});
+
+module.exports = router;
