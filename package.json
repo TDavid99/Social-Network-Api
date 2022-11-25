@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/TDavid99/Social-Network-Api/issues"
   },
-  "homepage": "https://github.com/TDavid99/Social-Network-Api#readme"
+  "homepage": "https://github.com/TDavid99/Social-Network-Api#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
