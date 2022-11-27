@@ -1,8 +1,9 @@
-const {Thought, User} = require("../../models");
-const router = require("express").Router();
+const Thought = require("../../models/Thoughts");
+const User= require ("../../models/User");
+const ThoughtRouter = require("express").Router();
 
 //get all thoughts 
-Thought.get("/",(req, res)=>{
+ThoughtRouter.get("/",(req, res) => {
     Thought.find({})
     .select("__v")
     .sort({ _id: -1 })
@@ -14,7 +15,7 @@ Thought.get("/",(req, res)=>{
 });
 
 // get thought 
-router.get("/:id", (req, res) => {
+ThoughtRouter.get("/:id", (req, res) => {
   Thought.findOne({_id: req.params.id })
   .select("-__v")
   .then((dbThoughtData) => res.json(dbThoughtData))
@@ -25,7 +26,7 @@ router.get("/:id", (req, res) => {
 });
 
 // add a thought
-router.post("/", (req, res) => {
+ThoughtRouter.post("/", (req, res) => {
   Thought.create(req.body)
   .then((dbThoughtData) => {
     return User.findOneAndUpdate(
@@ -45,7 +46,7 @@ router.post("/", (req, res) => {
 });
 
 //update thougt
-router.put("/:id", ({params, body}, res) => {
+ThoughtRouter.put("/:id", ({params, body}, res) => {
   Thought.findOneAndUpdate({ _id: params.id}, body, {
     new: true,
     runValidators: true,
@@ -62,7 +63,7 @@ router.put("/:id", ({params, body}, res) => {
 
 // delete a thought
 
-router.delete("/:thoughtId", (req, res) => {
+ThoughtRouter.delete("/:thoughtId", (req, res) => {
   Thought.findOneAndDelete({ _id: req.params.thoughtId})
   .then((deletedThought) =>{
     if(!deletedThought) {
@@ -86,7 +87,7 @@ router.delete("/:thoughtId", (req, res) => {
 });
 
 // add a reaction  
-router.post("/:thougthtId/reactions", (req, res) => {
+ThoughtRouter.post("/:thougthtId/reactions", (req, res) => {
   Thought.findOneAndUpdate(
   {_id: req.params.thougthtId },
   {
@@ -103,7 +104,7 @@ router.post("/:thougthtId/reactions", (req, res) => {
 });
   
 //delete a reaction
-router.delete("/:thoghtId/reactions/:reactionId ", (req, res) => {
+ThoughtRouter.delete("/:thoughtId/reactions/:reactionId ", (req, res) => {
   Thought. findOneAndUpdate(
     {_id:req.params.thoughtId },
     { $pull: { reactions: { _id: req.params.reactionId } } },
@@ -113,4 +114,4 @@ router.delete("/:thoghtId/reactions/:reactionId ", (req, res) => {
     .catch((err) => res.json(err));
 });
 
-module.exports = router;
+module.exports = ThoughtRouter
