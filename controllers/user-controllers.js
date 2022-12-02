@@ -59,8 +59,12 @@ const userController = {
                 if(~dbUserData) {
                     return res.status (404).json({message: "invaild user" })
                 }
+                res.json(dbUserData);
             })
-
-
-    }
+            .catch((err) => {
+                console.log(err);
+                res.status(500).json(err);
+            });
+        },
+        //remove user 
 }
