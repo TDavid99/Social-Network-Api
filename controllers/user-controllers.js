@@ -67,4 +67,54 @@ const userController = {
             });
         },
         //remove user 
+        deleteUser(req, res) {
+            User.fineOneAndDelete({_id: req.params.userId})
+            .then((dbUserData) => {
+                if(!dbUserData) {
+                    return res.status(404).json({message: "invaild user id"});
+                }
+                //delete users and Id's thoughts
+                return Thought.deleteMany({_id: {$in: dbUserData.thoughts }});
+            })
+            .then(() => {
+                res.json({message: "deleted user thoughts "});
+            })
+            .catch((err) => {
+                res.status(500).json(err);
+
+            });
+        },
+
+        //add friends
+        addFriends(req, res) {
+            User.fineOneAndUpdate({ _id: req.params.user.userId}, 
+                {$addToset: {friends: req.params.friendId} }, {new: true})
+                .then((dbUserData) => {
+                   if(!dbUserData) {
+                return res.status(404).json({message: "invaild id" });
+            }
+            res.json(dbUserData);
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
+        });
+},
+//remove friends
+removeFriend(req,res) {
+    User.findOneAndUpdate({ _id: req.params.userId}, {$pull: {friends: req.params.friendId} }, {new: true})
+    .then((dbUserData) => {
+        if(!dbUserData) {
+            return res.satus(404).json({message: "invaild id"});
+
+        }
+        res.json(dbUserData);
+    })
+    .catch((err) => {
+        console/log(err);
+        res.status(500).json(err);
+    });
 }
+}; 
+
+module.exports = userController;
