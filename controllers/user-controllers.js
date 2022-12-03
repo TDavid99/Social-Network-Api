@@ -68,7 +68,7 @@ const userController = {
         },
         //remove user 
         deleteUser(req, res) {
-            User.fineOneAndDelete({_id: req.params.userId})
+            User.findOneAndDelete({_id: req.params.userId})
             .then((dbUserData) => {
                 if(!dbUserData) {
                     return res.status(404).json({message: "invaild user id"});
@@ -87,7 +87,8 @@ const userController = {
 
         //add friends
         addFriends(req, res) {
-            User.fineOneAndUpdate({ _id: req.params.user.userId}, 
+            User.findOneAndUpdate(
+                { _id: req.params.user.userId}, 
                 {$addToset: {friends: req.params.friendId} }, {new: true})
                 .then((dbUserData) => {
                    if(!dbUserData) {
