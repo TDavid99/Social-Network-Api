@@ -4,5 +4,6 @@ This applcation uses the backend to develop a social media site. Users are able 
 
 link to GitHub: https://github.com/TDavid99/Social-Network-Api
 
-link to screen record: 
+link to screen record: https://drive.google.com/file/d/1H6zKwGCNkOsf8llf4Jkiz6MEtndO0Hb2/view
+
 
